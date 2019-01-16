@@ -27,6 +27,6 @@ h1 {
 }
 
 #app {
-    background-color: currentColor;
+    /* background-color: currentColor; */
     display: flex;
 }
