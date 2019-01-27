@@ -40,8 +40,8 @@ class Lab extends THREE.Object3D {
       this.uniforms.u_mouse.value.y = e.pageY;
     };
 
-    this.uniforms.u_resolution.value.x = 300;
-    this.uniforms.u_resolution.value.y = 300;
+    this.uniforms.u_resolution.value.x = 300 * window.devicePixelRatio;
+    this.uniforms.u_resolution.value.y = 300 * window.devicePixelRatio;
   }
 
   update() {}
