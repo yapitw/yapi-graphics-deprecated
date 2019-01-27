@@ -15,10 +15,12 @@ varying vec3 v_position;
 varying vec2 v_uv;
 varying float v_depth;
 
+
 void main()
 {
     float x = floor(uv.x + time);
     vec4 mv_position = modelViewMatrix * vec4(position, 1.);
     gl_Position = projectionMatrix * mv_position;
+    // v_depth =  -gl_Position.z
     v_depth = (sin((uv.x + time - x) * 2. * 3.1415926)) * 0.8;
 }
