@@ -2,6 +2,11 @@ import * as THREE from "three";
 
 const texture = new THREE.TextureLoader().load("/doodle.png");
 
+document.addEventListener("DOMContentLoaded", () => {
+  document.querySelector<HTMLDivElement>("#app").style.filter =
+    "saturate(0) brightness(1.4) contrast(2)";
+});
+
 interface IUniforms {
   u_time: { type: "f"; value: number };
   u_resolution: { type: "v2"; value: THREE.Vector2 };
