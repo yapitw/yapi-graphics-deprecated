@@ -26,8 +26,8 @@ void main() {
   vec2 value8 = texture2D(u_texture, position + vec2(0., -step_y)).rg;
   vec2 value9 = texture2D(u_texture, position + vec2(step_x, -step_y)).rg;
 
-  vec2 value = (value1 + value2 + value3 + value4 + value5 + value6 + value7 +
-                value8 + value9) /
+  vec2 value = ((value1 + value2 + value3 + value4 + value5) +
+                (value6 + value7 + value8 + value9)) /
                vec2(9., 9.);
 
   if (pixelate(position.x, 0.5, 5. * step_x) &&
