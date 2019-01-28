@@ -31,7 +31,6 @@ void main() {
     value = vec2(1., 1.);
   };
 
-
   // vec2 st = gl_FragCoord.xy / u_resolution.xy;
   gl_FragColor = vec4(value.x, value.y, 0., 1.0);
 }
