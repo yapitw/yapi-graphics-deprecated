@@ -29,4 +29,5 @@ h1 {
 #app {
     /* background-color: currentColor; */
     display: flex;
+    min-height: 300px
 }

@@ -91,7 +91,7 @@ class Lab extends THREE.Object3D {
   afterRender(toggle: boolean) {
     const toggleName = toggle ? "textBuffer2" : "textBuffer1";
     this.uniforms.u_texture.value = this[toggleName].texture;
-    this.uniforms.u_time.value += 0.1;
+    this.uniforms.u_time.value += 0.5;
     // console.log(this.uniforms.u_texture.value)
   }
 }

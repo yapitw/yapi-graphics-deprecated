@@ -1,6 +1,6 @@
 import * as THREE from "three";
 
-const seq = location.hash.slice(1);
+const seq = location.hash.slice(1) || 3;
 const Lab = require("./labs/" + seq).Lab;
 
 const scene = new THREE.Scene();
@@ -20,16 +20,19 @@ scene.add(lab);
 let switchTag = true;
 
 function animate() {
-  lab.update(switchTag);
-  renderer.render(
-    scene,
-    camera,
-    lab[switchTag ? "textBuffer2" : "textBuffer1"],
-    true
-  );
+  for (let i = 0; i < 12; i++) {
+    lab.update(switchTag);
+    renderer.render(
+      scene,
+      camera,
+      lab[switchTag ? "textBuffer2" : "textBuffer1"],
+      true
+    );
+    lab.afterRender && lab.afterRender(switchTag);
+    switchTag = !switchTag;
+  }
+
   renderer.render(scene, camera);
-  lab.afterRender && lab.afterRender(switchTag);
-  switchTag = !switchTag;
   requestAnimationFrame(animate);
 }
 
