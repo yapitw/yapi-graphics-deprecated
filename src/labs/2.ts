@@ -1,20 +1,25 @@
 import * as THREE from "three";
 
+const texture = new THREE.TextureLoader().load("/doodle.png");
+
 interface IUniforms {
   u_time: { type: "f"; value: number };
   u_resolution: { type: "v2"; value: THREE.Vector2 };
   u_mouse: { type: "v2"; value: THREE.Vector2 };
   u_texture: { type: "t"; value: THREE.Texture };
+  u_picture: { type: "t"; value: THREE.Texture };
 }
 
 class Lab extends THREE.Object3D {
   canvas: HTMLCanvasElement;
   uniforms: IUniforms;
-  textBuffer: THREE.WebGLRenderTarget;
+  textBuffer1: THREE.WebGLRenderTarget;
+  textBuffer2: THREE.WebGLRenderTarget;
   constructor() {
     super();
     this.init = this.init.bind(this);
     this.update = this.update.bind(this);
+    this.afterRender = this.afterRender.bind(this);
     this.init();
   }
 
@@ -28,7 +33,8 @@ class Lab extends THREE.Object3D {
       u_time: { type: "f", value: 1.0 },
       u_resolution: { type: "v2", value: new THREE.Vector2() },
       u_mouse: { type: "v2", value: new THREE.Vector2() },
-      u_texture: { type: "t", value: undefined }
+      u_texture: { type: "t", value: undefined },
+      u_picture: { type: "t", value: texture }
     };
 
     var material = new THREE.ShaderMaterial({
@@ -40,14 +46,31 @@ class Lab extends THREE.Object3D {
     var mesh = new THREE.Mesh(geometry, material);
     this.add(mesh);
 
-    this.textBuffer = new THREE.WebGLRenderTarget(600, 600, {
-      minFilter: THREE.LinearFilter,
-      magFilter: THREE.LinearFilter,
-      format: THREE.RGBAFormat,
-      type: THREE.FloatType
-    });
-    this.textBuffer.texture.wrapS = THREE.RepeatWrapping;
-    this.textBuffer.texture.wrapT = THREE.RepeatWrapping;
+    this.textBuffer1 = new THREE.WebGLRenderTarget(
+      300 * window.devicePixelRatio,
+      300 * window.devicePixelRatio,
+      {
+        minFilter: THREE.LinearFilter,
+        magFilter: THREE.LinearFilter,
+        format: THREE.RGBAFormat,
+        type: THREE.FloatType
+      }
+    );
+    this.textBuffer1.texture.wrapS = THREE.RepeatWrapping;
+    this.textBuffer1.texture.wrapT = THREE.RepeatWrapping;
+    
+    this.textBuffer2 = new THREE.WebGLRenderTarget(
+      300 * window.devicePixelRatio,
+      300 * window.devicePixelRatio,
+      {
+        minFilter: THREE.LinearFilter,
+        magFilter: THREE.LinearFilter,
+        format: THREE.RGBAFormat,
+        type: THREE.FloatType
+      }
+    );
+    this.textBuffer2.texture.wrapS = THREE.RepeatWrapping;
+    this.textBuffer2.texture.wrapT = THREE.RepeatWrapping;
 
     this.uniforms.u_resolution.value.x = 300 * window.devicePixelRatio;
     this.uniforms.u_resolution.value.y = 300 * window.devicePixelRatio;
@@ -58,13 +81,16 @@ class Lab extends THREE.Object3D {
     };
   }
 
-  update() {
+  update(toggle: boolean) {
     // this.uniforms.u_texture.value = this.textBuffer;
     // console.log(this.uniforms.u_texture.value)
+    const toggleName = toggle ? "textBuffer1" : "textBuffer2";
+    this.uniforms.u_texture.value = this[toggleName].texture;
   }
 
-  afterRender() {
-    this.uniforms.u_texture.value = this.textBuffer.texture.clone();
+  afterRender(toggle: boolean) {
+    const toggleName = toggle ? "textBuffer2" : "textBuffer1";
+    this.uniforms.u_texture.value = this[toggleName].texture;
     // console.log(this.uniforms.u_texture.value)
   }
 }

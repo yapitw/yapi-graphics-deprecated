@@ -8,7 +8,6 @@ const camera = new THREE.OrthographicCamera(-2, 2, -2, 2);
 const renderer = new THREE.WebGLRenderer({ alpha: true });
 const lab = new Lab(renderer);
 
-
 renderer.setSize(300, 300);
 renderer.setPixelRatio(window.devicePixelRatio);
 document.getElementById("app").appendChild(renderer.domElement);
@@ -18,11 +17,19 @@ camera.lookAt(0, 0, 0);
 
 scene.add(lab);
 
+let switchTag = true;
+
 function animate() {
-  lab.update();
-  renderer.render(scene, camera, lab.textBuffer, true);
+  lab.update(switchTag);
+  renderer.render(
+    scene,
+    camera,
+    lab[switchTag ? "textBuffer2" : "textBuffer1"],
+    true
+  );
   renderer.render(scene, camera);
-  lab.afterRender();
+  lab.afterRender && lab.afterRender(switchTag);
+  switchTag = !switchTag;
   requestAnimationFrame(animate);
 }
 
