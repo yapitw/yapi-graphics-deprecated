@@ -1,9 +1,4 @@
 import * as THREE from 'three'
-
-document.addEventListener('DOMContentLoaded', () => {
-  document.querySelector<HTMLDivElement>('#app').style.filter = 'saturate(0) brightness(1.4) contrast(2)'
-})
-
 const texture = new THREE.TextureLoader().load('/doodle.png')
 
 interface IUniforms {
@@ -25,6 +20,7 @@ class Lab {
   switchTag: boolean
   pixelRatio: number
   renderSize: number
+
   constructor() {
     this.init = this.init.bind(this)
     this.animation = this.animation.bind(this)
@@ -45,27 +41,25 @@ class Lab {
 
     camera.position.set(1, 1, 1)
     camera.lookAt(0, 0, 0)
-
-    const vertexShader = require('./3/shaderVertex.glsl')
-    const fragmentShader = require('./3/shaderFragment.glsl')
     this.canvas = document.querySelector('canvas')
 
+    const vertexShader = require('./shaderVertex.glsl')
+    const fragmentShader = require('./shaderFragment.glsl')
     const geometry = new THREE.PlaneBufferGeometry(2, 2)
     this.uniforms = {
-      u_time: { type: 'f', value: 0 },
-      u_resolution: { type: 'v2', value: new THREE.Vector2() },
+      u_time: { type: 'f', value: 1.0 },
+      u_resolution: { type: 'v2', value: new THREE.Vector2(renderSize * pixelRatio, renderSize * pixelRatio) },
       u_mouse: { type: 'v2', value: new THREE.Vector2() },
       u_texture: { type: 't', value: undefined },
       u_picture: { type: 't', value: texture },
     }
 
-    var material = new THREE.ShaderMaterial({
+    const material = new THREE.ShaderMaterial({
       uniforms: this.uniforms,
       vertexShader,
       fragmentShader,
     })
-
-    var mesh = new THREE.Mesh(geometry, material)
+    const mesh = new THREE.Mesh(geometry, material)
     scene.add(mesh)
 
     const targetOptions = {
@@ -78,17 +72,6 @@ class Lab {
     }
     this.textBuffer1 = new THREE.WebGLRenderTarget(renderSize * pixelRatio, renderSize * pixelRatio, targetOptions)
     this.textBuffer2 = new THREE.WebGLRenderTarget(renderSize * pixelRatio, renderSize * pixelRatio, targetOptions)
-
-    this.uniforms.u_resolution.value.x = renderSize * pixelRatio
-    this.uniforms.u_resolution.value.y = renderSize * pixelRatio
-
-    const container = document.querySelector<HTMLDivElement>('#app')
-    document.onmousemove = e => {
-      const x = e.pageX - container.offsetLeft
-      const y = e.pageY - container.offsetTop
-      this.uniforms.u_mouse.value.x = x
-      this.uniforms.u_mouse.value.y = y
-    }
   }
   animation() {
     const { scene, camera, renderer } = this
@@ -99,7 +82,6 @@ class Lab {
       this.switchTag = !this.switchTag
       this.uniforms.u_time.value += 1
     }
-
     renderer.render(scene, camera)
     requestAnimationFrame(this.animation)
   }
