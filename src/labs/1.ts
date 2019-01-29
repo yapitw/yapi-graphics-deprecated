@@ -59,7 +59,7 @@ class Lab {
   }
   animation() {
     const { scene, camera, renderer } = this
-    this.uniforms.u_time.value += 1
+    this.uniforms.u_time.value += 0.005
     renderer.render(scene, camera)
     requestAnimationFrame(this.animation)
     this.mesh.rotateY(-0.05)
