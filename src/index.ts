@@ -9,7 +9,7 @@ const lab = new Lab()
 document.addEventListener('DOMContentLoaded', function() {
   const prev = document.querySelector<HTMLLinkElement>('#prevBtn')
   const next = document.querySelector<HTMLLinkElement>('#nextBtn')
-  if (page > 1) {
+  if (page > 0) {
     prev.href = `?lab=${page - 1}`
   } else {
     prev.style.opacity = '0.5'

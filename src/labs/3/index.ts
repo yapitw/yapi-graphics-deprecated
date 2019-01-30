@@ -71,7 +71,8 @@ class Lab {
       minFilter: THREE.LinearFilter,
       magFilter: THREE.LinearFilter,
       format: THREE.RGBAFormat,
-      type: THREE.FloatType,
+      // type: THREE.FloatType,
+      type: THREE.HalfFloatType, // for ios compatibility
       wrapS: THREE.RepeatWrapping,
       wrapT: THREE.RepeatWrapping,
     }
