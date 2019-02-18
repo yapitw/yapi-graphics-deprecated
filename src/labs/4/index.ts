@@ -50,6 +50,8 @@ class Lab {
     camera.lookAt(0, 0, 0)
 
     this.canvas = document.querySelector('canvas')
+    this.canvas.style.width = '350px'
+    this.canvas.style.height = '350px'
     const geometry = new THREE.PlaneBufferGeometry(2, 2)
     this.uniforms = {
       u_time: { type: 'f', value: 0 },

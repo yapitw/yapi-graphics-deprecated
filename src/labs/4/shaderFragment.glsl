@@ -9,6 +9,11 @@ float Da = 1.0;
 float Db = 0.5;
 float feedRate = 0.0545;
 float killRate = 0.062;
+
+// cell split
+// float feedRate = 0.0345;
+// float killRate = 0.062;
+
 float deltaT = 1.;
 
 bool pixelate(float value, float num, float step) {
