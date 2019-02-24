@@ -1,4 +1,4 @@
-const maxSeq = 5
+const maxSeq = 6
 const query = /\?lab\=[0-9]+/.exec(location.search)
 let seq = Number(!!query ? query[0].replace('?lab=', '') : maxSeq)
 let page = seq > maxSeq ? maxSeq : seq
