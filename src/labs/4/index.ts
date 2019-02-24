@@ -87,21 +87,50 @@ class Lab {
     this.uniforms.u_resolution.value.y = renderSize * pixelRatio
 
     const container = document.querySelector<HTMLDivElement>('#app')
-    this.canvas.onmousemove = e => {
+    const moveHandler = e => {
+      e.preventDefault()
       const x = (e.pageX - container.offsetLeft) / this.canvas.clientWidth
       const y = 1 - (e.pageY - container.offsetTop) / this.canvas.clientHeight
       this.uniforms.u_mouse.value.x = x
       this.uniforms.u_mouse.value.y = y
-      // console.log(`x:${x}, y:${y}`)
     }
 
-    this.canvas.onmousedown = e => {
+    const downHandler = e => {
+      e.preventDefault()
+      moveHandler(e)
       this.uniforms.u_mousedown.value = true
+      this.canvas.addEventListener('pointermove', moveHandler)
+    }
+    this.canvas.addEventListener('pointerdown', downHandler)
+
+    const upHandler = e => {
+      e.preventDefault()
+      this.uniforms.u_mousedown.value = false
+      this.canvas.removeEventListener('pointermove', moveHandler)
+    }
+    this.canvas.addEventListener('pointerup', upHandler)
+
+    this.canvas.ontouchmove = e => {
+      e.preventDefault()
+    }
+    this.canvas.ontouchstart = e => {
+      e.preventDefault()
     }
 
-    this.canvas.onmouseup = e => {
-      this.uniforms.u_mousedown.value = false
+    const text = document.createElement('div')
+    text.innerText = 'TOUCH'
+    text.style.position = 'absolute'
+    text.style.color = 'white'
+    text.style.left = '50%'
+    text.style.top = '50%'
+    text.style.transform = 'translate(-50%, -50%)'
+    text.style.textShadow = '0 0 15px rgba(255,255,255, 0.3)'
+    container.appendChild(text)
+    const removeText = () => {
+      text.remove()
+      this.canvas.removeEventListener('pointerdown', removeText)
     }
+    this.canvas.addEventListener('pointerdown', removeText)
   }
   animation() {
     const { scene, camera, renderer } = this
