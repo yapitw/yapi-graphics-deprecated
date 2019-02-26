@@ -23,10 +23,9 @@ module.exports = {
   output: {
     filename: 'bundle.js',
     path: path.resolve(__dirname, 'dist'),
-    publicPath: '/yapi-graphics/dist/',
   },
   devServer: {
-    contentBase: path.join(__dirname, 'dist'),
+    contentBase: path.join(__dirname),
     compress: true,
     port: 8080,
   },
