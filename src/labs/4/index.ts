@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
   document.querySelector<HTMLDivElement>('#app').style.filter = 'saturate(0) brightness(1.4) contrast(2)'
 })
 
-const texture = new THREE.TextureLoader().load('/doodle.png')
+const texture = new THREE.TextureLoader().load('dist/doodle.png')
 
 interface IUniforms {
   u_time: { type: 'f'; value: number }
