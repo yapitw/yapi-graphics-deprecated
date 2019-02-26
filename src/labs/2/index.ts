@@ -1,5 +1,5 @@
 import * as THREE from 'three'
-const texture = new THREE.TextureLoader().load('/doodle.png')
+const texture = new THREE.TextureLoader().load('dist/doodle.png')
 
 interface IUniforms {
   u_time: { type: 'f'; value: number }

@@ -95,28 +95,6 @@ class Lab {
       this.uniforms.u_mouse.value.y = y
     }
 
-    const downHandler = e => {
-      e.preventDefault()
-      moveHandler(e)
-      this.uniforms.u_mousedown.value = true
-      this.canvas.addEventListener('pointermove', moveHandler)
-    }
-    this.canvas.addEventListener('pointerdown', downHandler)
-
-    const upHandler = e => {
-      e.preventDefault()
-      this.uniforms.u_mousedown.value = false
-      this.canvas.removeEventListener('pointermove', moveHandler)
-    }
-    this.canvas.addEventListener('pointerup', upHandler)
-
-    this.canvas.ontouchmove = e => {
-      e.preventDefault()
-    }
-    this.canvas.ontouchstart = e => {
-      e.preventDefault()
-    }
-
     const text = document.createElement('div')
     text.innerText = 'TOUCH'
     text.style.position = 'absolute'
@@ -125,12 +103,70 @@ class Lab {
     text.style.top = '50%'
     text.style.transform = 'translate(-50%, -50%)'
     text.style.textShadow = '0 0 15px rgba(255,255,255, 0.3)'
+    container.style.position = 'relative'
     container.appendChild(text)
-    const removeText = () => {
-      text.remove()
-      this.canvas.removeEventListener('pointerdown', removeText)
+
+    const input = {
+      start: '',
+      move: '',
+      end: '',
     }
-    this.canvas.addEventListener('pointerdown', removeText)
+
+    const inputDetection = (e: MouseEvent) => {
+      e.preventDefault()
+      if (e.type == 'touchstart') {
+        input.start = 'touchstart'
+        input.move = 'touchmove'
+        input.end = 'touchend'
+        // text.innerText = 'touch'
+      } else if (e.type == 'pointerdown') {
+        input.start = 'pointerdown'
+        input.move = 'pointermove'
+        input.end = 'pointerup'
+        // text.innerText = 'pointer'
+      } else {
+        input.start = 'mousedown'
+        input.move = 'mousemove'
+        input.end = 'mouseup'
+        // text.innerText = 'mouse'
+      }
+
+      text.remove()
+      this.canvas.removeEventListener('touchstart', inputDetection)
+      this.canvas.removeEventListener('pointerdown', inputDetection)
+      this.canvas.removeEventListener('mousedown', inputDetection)
+
+      moveHandler(e)
+      this.uniforms.u_mousedown.value = true
+      this.canvas.addEventListener(input.move, moveHandler)
+      this.canvas.addEventListener(input.start, downHandler)
+    }
+
+    this.canvas.addEventListener('touchstart', inputDetection)
+    this.canvas.addEventListener('pointerdown', inputDetection)
+    this.canvas.addEventListener('mousedown', inputDetection)
+
+    console.log(input)
+
+    const downHandler = e => {
+      e.preventDefault()
+      moveHandler(e)
+      this.uniforms.u_mousedown.value = true
+      this.canvas.addEventListener(input.move, moveHandler)
+      this.canvas.addEventListener(input.end, upHandler)
+    }
+
+    const upHandler = e => {
+      e.preventDefault()
+      this.uniforms.u_mousedown.value = false
+      this.canvas.removeEventListener(input.move, moveHandler)
+      this.canvas.removeEventListener(input.end, upHandler)
+    }
+
+    // this.canvas.ontouchmove = moveHandler
+    // this.canvas.addEventListener('touchstart', moveHandler)
+    // this.canvas.ontouchstart = downHandler
+    // this.canvas.addEventListener('touchmove', downHandler)
   }
   animation() {
     const { scene, camera, renderer } = this
