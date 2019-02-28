@@ -1,5 +1,5 @@
 import PerlinNoise from '../../libs/PerlinNoise'
-import { ParticleSystem, Particle, Vec2 } from '../../libs/Particle'
+import { ParticleSystem, Particle, Vec2 } from './Particle'
 
 const perlin = new PerlinNoise()
 
@@ -58,7 +58,7 @@ export class Lab {
   }
 
   clear = () => {
-    this.ctx.globalAlpha = 0.2 
+    this.ctx.globalAlpha = 1
     this.ctx.fillStyle = '#ffffff'
     this.ctx.fillRect(0, 0, this.width, this.height)
     this.ctx.globalAlpha = 1
