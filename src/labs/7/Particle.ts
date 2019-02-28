@@ -112,15 +112,11 @@ export class ParticleSystem {
     }
 
     this.particles.forEach(particle => {
-      if (
-        particle.x > this.limit.x_max ||
-        particle.x < this.limit.x_min ||
-        particle.y > this.limit.y_max ||
-        particle.y < this.limit.y_min
-      ) {
-        particle.kill = true
-      }
-      if (particle.age > 100) particle.kill = true
+      if (particle.x > this.limit.x_max) particle.position.x = this.limit.x_min
+      if (particle.x < this.limit.x_min) particle.position.x = this.limit.x_max
+      if (particle.y > this.limit.y_max) particle.position.y = this.limit.y_min
+      if (particle.y < this.limit.y_min) particle.position.y = this.limit.y_max
+      // if (particle.age > 100) particle.kill = true
       particle.update()
       this.draw(particle)
     })
